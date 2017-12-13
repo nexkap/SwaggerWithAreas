@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Swashbuckle.Areas</id>
+    <id>SwaggerWithAreas.Areas</id>
     <version>$version$</version>
     <title>Swashbuckle.Areas - Swagger for WebApi and MVC's Areas</title>
     <authors>Richard Morris</authors>

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Swashbuckle.Core</id>
+    <id>SwaggerWithAreas.Core</id>
     <version>$version$</version>
-    <title>Swashbuckle.Core - Swagger for WebApi</title>
+    <title>Finexkap Fork of Swashbuckle.Core - Swagger for WebApi</title>
     <authors>Richard Morris</authors>
     <licenseUrl>http://opensource.org/licenses/BSD-3-Clause</licenseUrl>
     <projectUrl>https://github.com/domaindrivendev/Swashbuckle</projectUrl>
