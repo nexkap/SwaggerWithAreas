@@ -83,7 +83,7 @@
 
             // Build a system
             const ui = SwaggerUIBundle({
-                url: "http://petstore.swagger.io/v2/swagger.json",
+                url: "%(RootUrl)/%(DiscoveryPaths)",
                 dom_id: '#swagger-ui',
                 deepLinking: true,
                 presets: [
@@ -94,16 +94,15 @@
                     SwaggerUIBundle.plugins.DownloadUrl
                 ],
                 layout: "StandaloneLayout"
-            })
+            });
 
-            window.ui = ui
+            window.ui = ui;
         }
     </script>
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
     $(function () {
-
-        // Get Swashbuckle config into JavaScript
+        
         function arrayFrom(configString) {
             return (configString !== "") ? configString.split('|') : [];
         }
@@ -200,7 +199,7 @@
             }
         }
     });
-</script>
+</script>-->
 
 </body>
 
