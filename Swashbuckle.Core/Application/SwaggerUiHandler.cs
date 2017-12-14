@@ -13,7 +13,7 @@ namespace Swashbuckle.Application
         private readonly SwaggerUiConfig _config;
 
         public SwaggerUiHandler(SwaggerUiConfig config)
-        {
+       {
             _config = config;
         }
 
