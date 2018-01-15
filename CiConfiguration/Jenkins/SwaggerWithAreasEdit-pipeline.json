@@ -1,0 +1,65 @@
+node {
+    try {
+        
+        stage('checkout sources'){
+            git branch: 'master', url: 'https://github.com/nexkap/SwaggerWithAreas.git', credentialsId:'9d03c511-edba-4a18-ab5b-2aca4a5bccd7'
+        }
+        
+        stage('nuget restore'){
+            bat 'nuget restore Swashbuckle.sln'
+        }
+       
+        stage('build'){
+            bat "\"${tool 'MSBuild'}msbuild.exe\" Swashbuckle.sln /t:Clean,Build /p:Configuration=Release /p:Platform=\"Any CPU\""
+        }
+        
+        stage('publish nuget packages'){
+            bat 'nuget push Swashbuckle.Areas\\bin\\Release\\*.nupkg https://nuget.finexkap.org/nuget Finexkap123'
+            bat 'nuget push Swashbuckle.Core\\bin\\Release\\*.nupkg https://nuget.finexkap.org/nuget Finexkap123'
+        }
+        
+        stage('Clean workspace'){
+            cleanWs cleanWhenFailure: false, cleanWhenUnstable: false
+        }
+    } catch (e) {
+        currentBuild.result = "FAILED"
+        throw e
+    } finally {
+        notifyBuild(currentBuild.result)
+    }
+}
+
+def notifyBuild(String buildStatus = 'STARTED') {
+  // build status of null means successful
+  buildStatus =  buildStatus ?: 'SUCCESSFUL'
+ 
+  // Default values
+  def colorName = 'RED'
+  def colorCode = '#FF0000'
+  def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+  def summary = "${subject} (${env.BUILD_URL})"
+  def details = """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+    <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>"""
+ 
+  // Override default values based on build status
+  if (buildStatus == 'STARTED') {
+    color = 'YELLOW'
+    colorCode = '#FFFF00'
+  } else if (buildStatus == 'SUCCESSFUL') {
+    color = 'GREEN'
+    colorCode = '#00FF00'
+  } else {
+    color = 'RED'
+    colorCode = '#FF0000'
+  }
+ 
+  slackSend (color: colorCode, message: summary)
+  
+  if (buildStatus == 'FAILURE' || buildStatus == 'FAILED'){
+      emailext (
+          subject: subject,
+          body: details,
+          recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'FailingTestSuspectsRecipientProvider'], [$class: 'FirstFailingBuildSuspectsRecipientProvider'], [$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+        )
+  }
+}
