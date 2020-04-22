@@ -2,7 +2,7 @@ node {
     try {
         
         stage('checkout sources'){
-            git branch: 'master', url: 'https://github.com/nexkap/SwaggerWithAreas.git', credentialsId:'9d03c511-edba-4a18-ab5b-2aca4a5bccd7'
+            git branch: 'master', url: 'https://github.com/nexkap/SwaggerWithAreas.git', credentialsId:'Github-SSH'
         }
         
         stage('nuget restore'){
